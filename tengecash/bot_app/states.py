@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from aiogram import F, Router
 from aiogram.types import Message, CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram.fsm.state import State, StatesGroup
@@ -9,7 +11,8 @@ from tengecash.bot_app.database import (
     get_user_by_tg_id,
     category_exists,
     update_category_name,
-    create_category
+    create_category,
+    get_categoies_db
 )
 
 router = Router()
@@ -17,6 +20,13 @@ router = Router()
 class LoginStates(StatesGroup):
     waiting_for_username = State()
     waiting_for_password = State()
+
+class ExpenseStates(StatesGroup):
+    waiting_for_description = State()
+    waiting_for_amount = State()
+    waiting_for_category = State()
+    waiting_fot_date = State()
+
 
 @router.message(LoginStates.waiting_for_username)
 async def process_username(message: Message, state: FSMContext):
@@ -120,8 +130,45 @@ async def process_delete_category(callback: CallbackQuery):
     )
     await callback.answer()
 
-# @router.message(ExpenseEditStates.waiting_for_new_expense_description)
-# async def process_expense_create(message: Message, state: FSMContext):
-#     expense_description = message.text.strip()
-#     expense_amount = int(message.text.strip())
-#     user = await get_user_by_tg_id(message.from_user.id)
+@router.message(ExpenseStates.waiting_for_description)
+async def process_expense_description(message: Message, state: FSMContext):
+    await state.update_data(description=message.text.strip())
+    await message.answer("Введи сумму:")
+    await state.set_state(ExpenseStates.waiting_for_amount)
+
+@router.message(ExpenseStates.waiting_for_amount)
+async def process_expense_amount(message: Message, state: FSMContext):
+    amount_text = message.text.strip().replace(',', '.')
+
+    try:
+        amount = Decimal(amount_text)
+    except:
+        await message.answer("Ошибка! Введи сумму числом, например 1000")
+        return
+
+    await state.update_data(amount=str(amount))
+
+    user = await get_user_by_tg_id(message.from_user.id)
+    categories = await get_categoies_db(user)
+
+    if not categories:
+        await message.answer(
+            "В базе пока нет категорий."
+            "Добавь их в браузерной версии /site или при помощи команды /catadd."
+        )
+        await state.clear()
+        return
+
+    keyboard = InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text=cat.name, callback_data=f"saveexp_{cat.id}")]
+        for cat in categories
+    ])
+
+    data = await state.get_data()
+    await message.answer(
+        f"Записываю: <b>{data['description']}</b> на сумму <b>{amount} тг.</b>\n"
+        f"Выбери категорию:",
+        reply_markup=keyboard,
+        parse_mode="HTML"
+    )
+    await state.set_state(ExpenseStates.waiting_for_category)
