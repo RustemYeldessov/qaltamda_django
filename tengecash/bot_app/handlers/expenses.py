@@ -12,7 +12,7 @@ from tengecash.bot_app.states import ExpenseStates
 
 router = Router()
 
-@router.message(Command("addexp"))
+@router.message(Command("expadd"))
 async def handle_expense_create(message: Message, state: FSMContext):
     tg_id = message.from_user.id
     user = await get_user_by_tg_id(tg_id)
@@ -40,7 +40,7 @@ async def confirm_expense(callback: CallbackQuery, state: FSMContext):
         await callback.answer()
         return
 
-    await create_expense(
+    new_expense = await create_expense(
         user=user,
         category_id=category_id,
         amount=Decimal(data['amount']),
@@ -48,10 +48,14 @@ async def confirm_expense(callback: CallbackQuery, state: FSMContext):
         section=section
     )
 
+    formatted_date = new_expense.date.strftime("%d.%m.%Y")
+
     await callback.message.edit_text(
-        f"✅ Сохранено!\n"
+        f"✅ Сохранено! <b>ID траты: {new_expense.id}</b>\n\n"
         f"Трата: {data['description']}\n"
-        f"Сумма: {data['amount']} тг."
+        f"Сумма: {data['amount']} тг.\n"
+        f"Дата: {formatted_date}",
+        parse_mode="HTML"
     )
     await state.clear()
     await callback.answer()
