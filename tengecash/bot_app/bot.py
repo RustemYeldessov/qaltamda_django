@@ -12,6 +12,7 @@ from handlers.common import router as common_router
 from handlers.categories import router as cat_router
 from handlers.expenses import router as exp_router
 from states import router as states_router
+from handlers.register import router as register_router
 
 
 async def main():
@@ -19,6 +20,7 @@ async def main():
     dp.include_router(cat_router)
     dp.include_router(states_router)
     dp.include_router(exp_router)
+    dp.include_router(register_router)
 
     print('Бот запущен...')
     await dp.start_polling(bot)
