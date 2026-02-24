@@ -15,7 +15,7 @@ HELP_COMMAND = """
 /login - регистрация в Tenge Cash
 /logout - выход из бота
 
-/addexp - добавить трату
+/expadd - добавить трату
 
 /catlist - список категорий
 /catadd - создать новую категорию
@@ -35,7 +35,7 @@ async def handle_help(message: Message):
 
 @router.message(Command("info"))
 async def handle_info(message: Message):
-    await message.answer('Введи трату в формате "Трата Сумма", например "Кофе 1000", затем выбери категорию')
+    await message.answer('Введи по очереди трату, сумму, затем выбери категорию')
 
 class LoginStates(StatesGroup):
     waiting_for_username = State()
