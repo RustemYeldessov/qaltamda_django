@@ -9,6 +9,24 @@ from tengecash.expenses.models import Expense
 
 
 @sync_to_async
+def registration_user_db(tg_id, username, first_name, last_name, password):
+    if User.objects.filter(username=username).exists():
+        return False, "Пользователь с таким логином уже существует."
+
+    try:
+        user = User.objects.create_user(
+            username=username,
+            password=password,
+            first_name=first_name,
+            last_name=last_name,
+            telegram_id=tg_id
+        )
+        return True, f"Получилось! Пользователь {username} успешно зарегистрирован!"
+    except Exception as e:
+        return False, f"Ошибка при регистрации: {str(e)}"
+
+
+@sync_to_async
 def logout_user_db(tg_id):
     user = User.objects.filter(telegram_id=tg_id).first()
     if user:
