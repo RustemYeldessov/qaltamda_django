@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 import os
 import dj_database_url
 from pathlib import Path
+import dj_database_url
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -43,7 +45,6 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'rest_framework',
     'rest_framework.authtoken',
-    'tengecash',
     'tengecash.users.apps.UsersConfig',
     'tengecash.categories.apps.CategoriesConfig',
     'tengecash.sections.apps.SectionsConfig',
@@ -93,19 +94,14 @@ WSGI_APPLICATION = 'tengecash.wsgi.application'
 #     )
 # }
 
+
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'neondb',  # Оставляем только чистое имя базы
-        'USER': 'neondb_owner',
-        'PASSWORD': 'npg_bmj5Qt6Ovxki',
-        'HOST': 'ep-winter-fog-ad4nudsx-pooler.c-2.us-east-1.aws.neon.tech',
-        'PORT': '5432',
-        'OPTIONS': {
-            'sslmode': 'require',
-        },
-        'CONN_MAX_AGE': 600, # Полезно для стабильности соединения с Neon
-    }
+    'default': dj_database_url.config(
+        default=os.environ.get('DATABASE_URL'),
+        conn_max_age=600,
+        conn_health_checks=True, # Очень важно для бота!
+    )
 }
 
 if DATABASES['default'].get('ENGINE') == 'django.db.backends.postgresql':

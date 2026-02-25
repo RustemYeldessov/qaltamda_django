@@ -1,11 +1,16 @@
 from asgiref.sync import sync_to_async
 from django.contrib.auth import authenticate
 from django.utils import timezone
+from django.db import connections
 
 from tengecash.users.models import User
 from tengecash.categories.models import Category
 from tengecash.sections.models import Section
 from tengecash.expenses.models import Expense
+
+def close_old_connections():
+    for conn in connections.all():
+        conn.close_if_unusable_or_obsolete()
 
 
 @sync_to_async
@@ -37,6 +42,7 @@ def logout_user_db(tg_id):
 
 @sync_to_async
 def get_user_by_tg_id(tg_id):
+    close_old_connections()
     return User.objects.filter(telegram_id=tg_id).first()
 
 @sync_to_async
