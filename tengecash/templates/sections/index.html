@@ -5,7 +5,7 @@
 {% load expense_tags %}
 
 {% block content %}
-<div class="container wrapper flex-grow-1">
+<div class="container wrapper flex-grow-1" style="max-width: 900px;">
     <h1 class="my-4">{% trans "Sections" %}</h1>
     <a class="btn btn-primary mb-3" href="{% url 'sections:create' %}">{% trans "Add section" %}</a>
 
@@ -23,7 +23,7 @@
         <tbody>
         {% for section in sections %}
             <tr>
-                <td class="col-1">{{ section.id }}</td>
+                <td class="text-muted small">#{{ section.id }}</td>
                 <td class="col-5">{{ section.name }}</td>
                 <td class="col-1">{{ section.created_at|date:"d.m.Y" }}</td>
                 <td class="col-1 text-nowrap">

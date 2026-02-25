@@ -5,7 +5,8 @@
 {% load expense_tags %}
 
 {% block content %}
-<div class="container wrapper flex-grow-1">
+<div class="container wrapper flex-grow-1" style="max-width: 900px;">
+
     <h1 class="my-4">{% trans "Categories" %}</h1>
     <a class="btn btn-primary mb-3" href="{% url 'categories:create' %}">{% trans "Add category" %}</a>
 
@@ -23,7 +24,7 @@
         <tbody>
         {% for category in categories %}
             <tr>
-                <td class="col-1">{{ category.id }}</td>
+                <td class="text-muted small">#{{ category.id }}</td>
                 <td class="col-5">{{ category.name }}</td>
                 <td class="col-1">{{ category.created_at|date:"d.m.Y" }}</td>
                 <td class="col-1 text-nowrap">
@@ -57,5 +58,5 @@
         {% endif %}
       </ul>
     </nav>
-</div>
+</>
 {% endblock %}

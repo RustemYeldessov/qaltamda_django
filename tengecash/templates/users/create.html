@@ -3,7 +3,7 @@
 {% load i18n %}
 
 {% block content %}
-<div class="container wrapper flex-grow-1">
+<div class="container wrapper flex-grow-1" style="max-width: 900px;">
 <h1 class="my-4">{% trans "Registration" %}</h1>
 <form method="post">
   {% csrf_token %}

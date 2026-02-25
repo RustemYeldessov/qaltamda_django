@@ -3,6 +3,7 @@
 {% load i18n %}
 
 {% block content %}
+<div class="container wrapper flex-grow-1" style="max-width: 900px;">
 <h1 class="my-4">{% trans "Delete user" %}</h1>
   <form action="{% url 'users:delete' user.pk %}" method="post">
     {% csrf_token %}
@@ -11,4 +12,5 @@
     </p>
     <input class="btn btn-danger" type="submit" value="{% trans 'Yes, delete' %}">
   </form>
+</div>
 {% endblock %}
