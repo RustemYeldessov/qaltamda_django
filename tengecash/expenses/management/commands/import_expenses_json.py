@@ -13,7 +13,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         User = get_user_model()
-        target_username = 'rus_yeldessov'
+        target_username = 'miumiu'
         user = User.objects.filter(username=target_username).first()
 
         if not user:
@@ -35,7 +35,7 @@ class Command(BaseCommand):
 
             for row in data:
                 # Фильтруем только Рустема
-                if row.get('Name', '').strip() != 'Рустем':
+                if row.get('Name', '').strip() != 'Ильмира':
                     continue
 
                 if not row.get('Amount') or not row.get('Date'):

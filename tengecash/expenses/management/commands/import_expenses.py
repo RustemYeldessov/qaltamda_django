@@ -20,7 +20,7 @@ class Command(BaseCommand):
             self.stdout.write(self.style.ERROR('Пользователь не найден!'))
             return
 
-        file_path = 'new_expenses.csv'
+        file_path = 'expenses.csv'
         count = 0
         skipped_count = 0
 
