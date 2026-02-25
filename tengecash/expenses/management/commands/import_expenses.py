@@ -30,7 +30,7 @@ class Command(BaseCommand):
                 for row in reader:
                     try:
                         # Фильтрация по имени
-                        if row.get('Name', '').strip() != 'Рустем':
+                        if row.get('Name', '').strip() != 'Ильмира':
                             skipped_count += 1
                             continue
 

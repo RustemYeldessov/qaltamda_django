@@ -13,7 +13,7 @@ load_dotenv()
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'tengecash.settings')
 django.setup()
 
-from loader import dp, bot
+from tengecash.bot_app.loader import dp, bot
 from tengecash.bot_app.handlers.common import router as common_router
 from tengecash.bot_app.handlers.categories import router as cat_router
 from tengecash.bot_app.handlers.expenses import router as exp_router
