@@ -10,7 +10,7 @@ from tengecash.bot_app.database import get_user_by_tg_id, logout_user_db
 router = Router()
 
 HELP_COMMAND = """
-/info - инструкция по внесению трат
+/info - Этот бот предназначен для помощи в ведении расходов. Для показа списка команд введи /help
 /start - начать работу с ботом
 /login - регистрация в Tenge Cash
 /register - регистрация пользователя
@@ -23,10 +23,10 @@ HELP_COMMAND = """
 /catedit - редактировать список категорий
 /catdelete - удалить категорию и ее содержимое
 
-/list - список последних 10-ти расходов
-/total - сумма расходов за текущий месяц
+/list - список последних 10-ти расходов (в разработке)
+/total - сумма расходов за текущий месяц (в разработке)
 
-/site - перейти на веб-сайт Tenge Cash
+/site - перейти на веб-сайт Tenge Cash (в разработке)
 """
 
 @router.message(Command("help"))
@@ -36,7 +36,7 @@ async def handle_help(message: Message):
 
 @router.message(Command("info"))
 async def handle_info(message: Message):
-    await message.answer('Введи по очереди трату, сумму, затем выбери категорию')
+    await message.answer('Для внесения траты в базу данных используй команду /expadd')
 
 class LoginStates(StatesGroup):
     waiting_for_username = State()
@@ -47,7 +47,7 @@ async def handle_start(message: Message):
     tg_id = message.from_user.id
     user = await get_user_by_tg_id(tg_id)
     if user:
-        await message.answer(f'С возвращением, {user.username}!')
+        await message.answer(f'С возвращением, {user.first_name}!')
     else:
         await message.answer(
             "Упс... Ты не авторизован.\n"
