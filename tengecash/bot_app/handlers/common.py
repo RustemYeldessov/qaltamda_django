@@ -3,7 +3,8 @@ from aiogram.types import Message
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
-from aiogram.utils.keyboard import InlineKeyboardBuilder
+from aiogram.utils.keyboard import InlineKeyboardBuilder, ReplyKeyboardBuilder
+from aiogram.types import Message, KeyboardButton
 
 from tengecash.bot_app.database import get_user_by_tg_id, logout_user_db
 
@@ -42,6 +43,18 @@ async def handle_info(message: Message):
 class LoginStates(StatesGroup):
     waiting_for_username = State()
     waiting_for_password = State()
+
+@router.message(Command("start"))
+async def handle_start(message: Message):
+    tg_id = message.from_user.id
+    user = await get_user_by_tg_id(tg_id)
+    if user:
+        await message.answer(f'С возвращением, {user.first_name}!')
+    else:
+        await message.answer(
+            "Упс... Ты не авторизован.\n"
+            "Пожалуйста, введи команду для привязки: /login"
+        )
 
 
 @router.message(Command("login"))
