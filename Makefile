@@ -50,3 +50,6 @@ ci-test:
 	uv run coverage run --omit='*/migrations/*,*/settings.py,*/venv/*,*/.venv/*' -m pytest tengecash --ds=tengecash.settings --reuse-db
 	uv run coverage xml
 	uv run coverage report --show-missing --skip-covered
+
+runbot:
+	uv run python tengecash/bot_app/bot.py
