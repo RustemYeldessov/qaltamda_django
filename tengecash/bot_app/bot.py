@@ -20,6 +20,7 @@ from tengecash.bot_app.handlers.categories import router as cat_router
 from tengecash.bot_app.handlers.expenses import router as exp_router
 from tengecash.bot_app.states import router as states_router
 from tengecash.bot_app.handlers.register import router as register_router
+from tengecash.bot_app.handlers.statistics import router as stats_router
 
 
 async def set_main_menu(bot):
@@ -42,6 +43,7 @@ async def main():
     dp.include_router(states_router)
     dp.include_router(exp_router)
     dp.include_router(register_router)
+    dp.include_router(stats_router)
 
     await bot.delete_webhook(drop_pending_updates=True)
 

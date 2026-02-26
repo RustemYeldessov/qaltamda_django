@@ -2,6 +2,7 @@ from asgiref.sync import sync_to_async
 from django.contrib.auth import authenticate
 from django.utils import timezone
 from django.db import connections
+from django.db.models import Sum
 
 from tengecash.users.models import User
 from tengecash.categories.models import Category
@@ -98,3 +99,21 @@ def create_expense(user, category_id, amount, description, section):
         description=description,
         date=timezone.now()
     )
+
+@sync_to_async
+def get_monthly_stats(user):
+    today = timezone.now().date()
+    start_date = today.replace(day=1)
+
+    user_expenses = Expense.objects.filter(user=user)
+
+    expenses_by_category = list(
+        user_expenses.filter(date__gte=start_date, date__lte=today)
+        .values("category__name")
+        .annotate(sum=Sum("amount"))
+        .order_by("-sum")
+    )
+
+    total_sum = sum(item['sum'] for item in expenses_by_category)
+
+    return expenses_by_category, total_sum
