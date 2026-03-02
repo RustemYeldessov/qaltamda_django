@@ -10,7 +10,9 @@ from tengecash.bot_app.states import CategoryEditStates
 router = Router()
 
 @router.message(Command("catlist"))
-async def handle_catlist(message: Message):
+async def handle_catlist(message: Message, state: FSMContext):
+    await state.clear()
+
     tg_id = message.from_user.id
     user = await get_user_by_tg_id(tg_id)
 
@@ -34,7 +36,9 @@ async def handle_catlist(message: Message):
 
 
 @router.message(Command("catedit"))
-async def handle_catedit(message: Message):
+async def handle_catedit(message: Message, state: FSMContext):
+    await state.clear()
+
     tg_id = message.from_user.id
     user = await get_user_by_tg_id(tg_id)
 
@@ -59,6 +63,8 @@ async def handle_catedit(message: Message):
 
 @router.message(Command("catadd"))
 async def handle_category_create(message: Message, state: FSMContext):
+    await state.clear()
+
     tg_id = message.from_user.id
     user = await get_user_by_tg_id(tg_id)
 
@@ -71,7 +77,9 @@ async def handle_category_create(message: Message, state: FSMContext):
 
 
 @router.message(Command("catdelete"))
-async def handle_category_delete(message: Message):
+async def handle_category_delete(message: Message, state: FSMContext):
+    await state.clear()
+
     tg_id = message.from_user.id
     user = await get_user_by_tg_id(tg_id)
 
