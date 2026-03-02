@@ -11,6 +11,8 @@ router = Router()
 
 @router.message(Command("stats"))
 async def handle_stats(message: Message, state: FSMContext):
+    await state.clear()
+
     tg_id = message.from_user.id
     user = await get_user_by_tg_id(tg_id)
 
