@@ -18,6 +18,7 @@ class RegistrationStates(StatesGroup):
 
 @router.message(Command("register"))
 async def start_registration(message: Message, state: FSMContext):
+    await state.clear()
     await message.answer("Начнем регистрацию!\nВведи свое имя:")
     await state.set_state(RegistrationStates.waiting_for_first_name)
 
