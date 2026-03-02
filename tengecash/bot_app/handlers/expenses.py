@@ -14,6 +14,8 @@ router = Router()
 
 @router.message(Command("expadd"))
 async def handle_expense_create(message: Message, state: FSMContext):
+    await state.clear()
+
     tg_id = message.from_user.id
     user = await get_user_by_tg_id(tg_id)
 
