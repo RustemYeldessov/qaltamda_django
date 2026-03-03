@@ -57,7 +57,8 @@ async def handle_start(message: Message, state: FSMContext):
     else:
         await message.answer(
             "Упс... Ты не авторизован.\n"
-            "Пожалуйста, введи команду для привязки: /login"
+            "Пожалуйста, введи команду для привязки: /login\n\n"
+            "Если у тебя еще нет аккаунта, ты можешь его создать: /register"
         )
 
 
