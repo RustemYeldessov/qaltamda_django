@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'rest_framework',
     'rest_framework.authtoken',
+    'safedelete',
     'tengecash.users.apps.UsersConfig',
     'tengecash.categories.apps.CategoriesConfig',
     'tengecash.sections.apps.SectionsConfig',
