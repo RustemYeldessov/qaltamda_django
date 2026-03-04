@@ -5,16 +5,17 @@ from django.core.validators import MinValueValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
+from safedelete.models import SafeDeleteModel, SOFT_DELETE_CASCADE
 
 from tengecash.categories.models import Category
 from tengecash.sections.models import Section
 
 User = get_user_model()
 
-class Expense(models.Model):
+class Expense(SafeDeleteModel):
     section = models.ForeignKey(
         Section,
-        on_delete=models.PROTECT,
+        on_delete=models.CASCADE,
         related_name="expenses",
         verbose_name=_("Section")
     )
@@ -24,7 +25,7 @@ class Expense(models.Model):
     )
     category = models.ForeignKey(
         Category,
-        on_delete=models.PROTECT,
+        on_delete=models.CASCADE,
         related_name="expenses",
         verbose_name=_("Category")
     )
@@ -44,10 +45,11 @@ class Expense(models.Model):
         related_name="expenses_created",
         verbose_name=_("Author")
     )
+    _safedelete_policy = SOFT_DELETE_CASCADE
 
     def __str__(self):
         return f"{self.description} - {self.amount}"
 
-    class Meta:
+    class Meta(SafeDeleteModel.Meta):
         verbose_name = _("Expense")
         verbose_name_plural = _("Expenses")
