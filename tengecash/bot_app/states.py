@@ -138,7 +138,7 @@ async def process_expense_description(message: Message, state: FSMContext):
 
 @router.message(ExpenseStates.waiting_for_amount)
 async def process_expense_amount(message: Message, state: FSMContext):
-    amount_text = message.text.strip().replace(',', '.')
+    amount_text = message.text.strip().replace(',', '').replace(' ', '')
 
     try:
         amount = Decimal(amount_text)
