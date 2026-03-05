@@ -12,7 +12,9 @@ from tengecash.bot_app.database import (
     category_exists,
     update_category_name,
     create_category,
-    get_categoies_db
+    get_categoies_db,
+    expense_exists,
+    delete_expense_by_id
 )
 
 router = Router()
@@ -26,6 +28,8 @@ class ExpenseStates(StatesGroup):
     waiting_for_amount = State()
     waiting_for_category = State()
     waiting_fot_date = State()
+
+    waiting_for_expense_id = State()
 
 
 @router.message(LoginStates.waiting_for_username)
@@ -172,3 +176,21 @@ async def process_expense_amount(message: Message, state: FSMContext):
         parse_mode="HTML"
     )
     await state.set_state(ExpenseStates.waiting_for_category)
+
+@router.message(ExpenseStates.waiting_for_expense_id)
+async def process_expense_id(message: Message, state: FSMContext):
+    expense_id = message.text
+
+    if not expense_id.isdigit():
+        await message.answer("ID траты должно быть числом")
+        return
+
+    user = await get_user_by_tg_id(message.from_user.id)
+    delete_count, _ = await delete_expense_by_id(user, int(expense_id))
+
+    if delete_count > 0:
+        await message.answer(f"✅ Трата №<b>{expense_id}</b> успешно удалена", parse_mode="HTML")
+    else:
+        await message.answer("Трата с таким ID не найдена")
+
+    await state.clear()
