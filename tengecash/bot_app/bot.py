@@ -28,6 +28,7 @@ async def set_main_menu(bot):
         types.BotCommand(command="help", description="Список команд"),
         types.BotCommand(command="start", description="Запустить бота"),
         types.BotCommand(command="expadd", description="Добавить трату"),
+        types.BotCommand(command="expdelete", description="Удалить трату"),
         types.BotCommand(command="stats", description="Статистика за месяц"),
         types.BotCommand(command="catlist", description="Список категорий"),
         types.BotCommand(command="catedit", description="Редактировать категорию"),
