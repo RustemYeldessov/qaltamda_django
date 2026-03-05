@@ -128,7 +128,8 @@ async def process_delete_category(callback: CallbackQuery):
     await callback.message.edit_text(
         "⚠️ <b>Внимание!</b>\n"
         "При удалении категории удалятся и все расходы, связанные с ней.\n"
-        "Ты уверен?",
+        "Данные при необходимости можно восстановить.\n"
+        "Удалить?",
         reply_markup=keyboard,
         parse_mode="HTML"
     )
