@@ -61,3 +61,17 @@ async def confirm_expense(callback: CallbackQuery, state: FSMContext):
     )
     await state.clear()
     await callback.answer()
+
+@router.message(Command("expdelete"))
+async def handle_expense_delete(message: Message, state: FSMContext):
+    await state.clear()
+
+    tg_id = message.from_user.id
+    user = await get_user_by_tg_id(tg_id)
+
+    if not user:
+        await message.answer("Сначала нужно авторизоваться, используй /login")
+        return
+
+    await message.answer("Введи ID траты, которую нужно удалить:")
+    await state.set_state(ExpenseStates.waiting_for_expense_id)
