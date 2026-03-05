@@ -101,6 +101,15 @@ def create_expense(user, category_id, amount, description, section):
     )
 
 @sync_to_async
+def expense_exists(user, expense_id):
+    return Expense.objects.filter(id=expense_id, user=user).exists()
+
+@sync_to_async
+def delete_expense_by_id(user, expense_id):
+    return Expense.objects.filter(id=expense_id, user=user).delete()
+
+
+@sync_to_async
 def get_monthly_stats(user):
     today = timezone.now().date()
     start_date = today.replace(day=1)
