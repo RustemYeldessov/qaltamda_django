@@ -4,7 +4,8 @@ from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.messages.views import SuccessMessageMixin
-from django.shortcuts import redirect
+from django.shortcuts import get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
 
 from tengecash.core.mixins import SafeDeleteMixin
 from .forms import CategoryForm
@@ -78,3 +79,14 @@ class CategoryDeleteView(
             _("You do not have permission to perform this action")
         )
         return redirect("categories:index")
+
+
+@login_required
+def category_toggle_favorite(request, pk):
+    # Ищем категорию, принадлежащую именно этому юзеру
+    category = get_object_or_404(Category, pk=pk, user=request.user)
+    # Меняем значение на противоположное
+    category.is_favorite = not category.is_favorite
+    category.save()
+    # Возвращаемся обратно на страницу списка
+    return redirect('categories:index')
