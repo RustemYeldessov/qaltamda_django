@@ -65,7 +65,7 @@ def logout_user_db(tg_id):
     return False
 
 @sync_to_async
-def get_categoies_db(user):
+def get_categories_db(user):
     return list(Category.objects.filter(user=user))
 
 @sync_to_async
@@ -126,3 +126,10 @@ def get_monthly_stats(user):
     total_sum = sum(item['sum'] for item in expenses_by_category)
 
     return expenses_by_category, total_sum
+
+@sync_to_async
+def get_favorite_categories_db(user):
+    favorites = list(Category.objects.filter(user=user, is_favorite=True))
+    if not favorites:
+        return list(Category.objects.filter(user=user))
+    return favorites
