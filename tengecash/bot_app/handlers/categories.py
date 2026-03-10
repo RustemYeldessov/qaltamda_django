@@ -3,7 +3,13 @@ from aiogram.types import Message, CallbackQuery, InlineKeyboardButton, InlineKe
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 
-from tengecash.bot_app.database import get_user_by_tg_id, get_categories_db, category_delete, get_categories_db
+from tengecash.bot_app.database import (
+    get_user_by_tg_id,
+    get_categories_db,
+    category_delete,
+    get_categories_db,
+    get_favorite_categories_db
+)
 from tengecash.bot_app.states import CategoryEditStates
 
 
@@ -152,4 +158,32 @@ async def show_all_categories_handler(callback: CallbackQuery, state: FSMContext
         parse_mode="HTML"
     )
 
+    await callback.answer()
+
+
+@router.callback_query(F.data == "show_favorite_categories")
+async def show_favorite_categories_handler(callback: CallbackQuery, state: FSMContext):
+    user = await get_user_by_tg_id(callback.from_user.id)
+
+    categories = await get_favorite_categories_db(user)
+
+    if not categories:
+        await callback.answer("У тебя пока нет избранных категорий", show_alert=True)
+        return
+
+    buttons = [
+        [InlineKeyboardButton(text=f"{cat.name} ⭐", callback_data=f"saveexp_{cat.id}")]
+        for cat in categories
+    ]
+
+    buttons.append([
+        InlineKeyboardButton(text="🔍 Показать все категории", callback_data="show_all_categories")
+    ])
+
+    keyboard = InlineKeyboardMarkup(inline_keyboard=buttons)
+
+    await callback.message.edit_text(
+        "Выбери категорию (только избранные):",
+        reply_markup=keyboard
+    )
     await callback.answer()
