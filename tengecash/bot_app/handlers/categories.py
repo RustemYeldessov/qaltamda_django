@@ -3,7 +3,7 @@ from aiogram.types import Message, CallbackQuery, InlineKeyboardButton, InlineKe
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 
-from tengecash.bot_app.database import get_user_by_tg_id, get_categoies_db, category_delete
+from tengecash.bot_app.database import get_user_by_tg_id, get_categories_db, category_delete, get_categories_db
 from tengecash.bot_app.states import CategoryEditStates
 
 
@@ -20,7 +20,7 @@ async def handle_catlist(message: Message, state: FSMContext):
         await message.answer("Сначала нужно авторизоваться, используй /login")
         return
 
-    categories = await get_categoies_db(user)
+    categories = await get_categories_db(user)
     if not categories:
         await message.answer(
             "В базе пока нет категорий."
@@ -46,7 +46,7 @@ async def handle_catedit(message: Message, state: FSMContext):
         await message.answer("Сначала нужно авторизоваться, используй /login")
         return
 
-    categories = await get_categoies_db(user)
+    categories = await get_categories_db(user)
     if not categories:
         await message.answer(
             "В базе пока нет категорий."
@@ -87,7 +87,7 @@ async def handle_category_delete(message: Message, state: FSMContext):
         await message.answer("Сначала нужно авторизоваться, используй /login")
         return
 
-    categories = await get_categoies_db(user)
+    categories = await get_categories_db(user)
     if not categories:
         await message.answer(
             "В базе пока нет категорий."
