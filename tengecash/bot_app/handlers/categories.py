@@ -116,3 +116,40 @@ async def confirm_delete(callback: CallbackQuery):
 async def cancel_delete(callback: CallbackQuery):
     await callback.message.edit_text("Действие отменено. Данные в сохранности! 😌")
     await callback.answer()
+
+
+@router.callback_query(F.data == "show_all_categories")
+async def show_all_categories_handler(callback: CallbackQuery, state: FSMContext):
+    tg_id = callback.from_user.id
+    user = await get_user_by_tg_id(tg_id)
+
+    if not user:
+        await callback.answer("Ошибка авторизации", show_alert=True)
+        return
+
+    all_categories = await get_categories_db(user)
+
+    if not all_categories:
+        await callback.answer("Категорий пока нет", show_alert=True)
+        return
+
+    buttons = [
+        InlineKeyboardButton(text=cat.name, callback_data=f"saveexp_{cat.id}")
+        for cat in all_categories
+    ]
+
+    rows = [buttons[i:i + 2] for i in range(0, len(buttons), 2)]
+
+    rows.append([
+        InlineKeyboardButton(text="⭐ Назад к избранным", callback_data="show_favorite_categories")
+    ])
+
+    keyboard = InlineKeyboardMarkup(inline_keyboard=rows)
+
+    await callback.message.edit_text(
+        "<b>Выбери категорию (полный список):</b>",
+        reply_markup=keyboard,
+        parse_mode="HTML"
+    )
+
+    await callback.answer()
