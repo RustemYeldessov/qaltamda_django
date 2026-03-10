@@ -2,11 +2,16 @@ from decimal import Decimal
 from pyexpat.errors import messages
 
 from aiogram import F, Router
-from aiogram.types import Message, CallbackQuery
+from aiogram.types import Message, CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 
-from tengecash.bot_app.database import get_user_by_tg_id, create_expense, get_first_section
+from tengecash.bot_app.database import (
+    get_user_by_tg_id,
+    create_expense,
+    get_first_section,
+    get_categories_db
+)
 from tengecash.bot_app.states import ExpenseStates
 
 
@@ -75,3 +80,28 @@ async def handle_expense_delete(message: Message, state: FSMContext):
 
     await message.answer("Введи ID траты, которую нужно удалить:")
     await state.set_state(ExpenseStates.waiting_for_expense_id)
+
+@router.callback_query(F.data == "show_all_categories")
+async def show_all_categories_handler(callback: CallbackQuery, state: FSMContext):
+    user = await get_user_by_tg_id(callback.from_user.id)
+    all_categories = await get_categories_db()
+
+    if not all_categories:
+        await callback.answer("Категорий пока нет", show_alert=True)
+        return
+
+    keyboard = InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text=cat.name, callback_data=f"saveexp_{cat.id}")]
+        for cat in all_categories
+    ])
+
+    keyboard.inline_keyboard.append([
+        InlineKeyboardButton(text="Назад к избранным", callback_data="show_favorite_categories")
+    ])
+
+    await callback.message.edit_text(
+        "Выбери категорию:",
+        reply_markup=keyboard
+    )
+
+    await callback.answer()
