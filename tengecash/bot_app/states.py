@@ -12,9 +12,10 @@ from tengecash.bot_app.database import (
     category_exists,
     update_category_name,
     create_category,
-    get_categoies_db,
+    get_categories_db,
     expense_exists,
-    delete_expense_by_id
+    delete_expense_by_id,
+    get_favorite_categories_db
 )
 
 router = Router()
@@ -154,7 +155,7 @@ async def process_expense_amount(message: Message, state: FSMContext):
     await state.update_data(amount=str(amount))
 
     user = await get_user_by_tg_id(message.from_user.id)
-    categories = await get_categoies_db(user)
+    categories = await get_favorite_categories_db(user)
 
     if not categories:
         await message.answer(
@@ -165,14 +166,17 @@ async def process_expense_amount(message: Message, state: FSMContext):
         return
 
     keyboard = InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton(text=cat.name, callback_data=f"saveexp_{cat.id}")]
+        [InlineKeyboardButton(text=f"{cat.name} ⭐", callback_data=f"saveexp_{cat.id}")]
         for cat in categories
+    ])
+    keyboard.inline_keyboard.append([
+        InlineKeyboardButton(text="🔍 Показать все категории", callback_data="show_all_categories")
     ])
 
     data = await state.get_data()
     await message.answer(
         f"Записываю: <b>{data['description']}</b> на сумму <b>{amount} тг.</b>\n"
-        f"Выбери категорию:",
+        f"Выбери категорию (показаны только избранные):",
         reply_markup=keyboard,
         parse_mode="HTML"
     )
