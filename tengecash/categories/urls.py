@@ -15,5 +15,10 @@ urlpatterns = [
         views.CategoryDeleteView.as_view(),
         name="delete"
     ),
+    path(
+        '<int:pk>/toggle-favorite/',
+        views.category_toggle_favorite,
+        name='toggle_favorite'
+    ),
     path("", views.CategoryListView.as_view(), name="index"),
 ]
