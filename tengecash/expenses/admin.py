@@ -12,5 +12,4 @@ class ExpenseAdmin(admin.ModelAdmin):
     list_filter = ('date', 'category', 'section')
     search_fields = ('description',)
 
-admin.site.register(Category)
 admin.site.register(Section)
