@@ -18,7 +18,7 @@
                 <th class="col-1">ID</th>
                 <th class="col-5">{% trans "Name" %}</th>
                 <th class="col-1">{% trans "Creation date" %}</th>
-                <th class="col-1"></th>
+                <th class="col-1 text-center"><i class="bi bi-star-fill"></i></th> <th class="col-1"></th>
             </tr>
         </thead>
         <tbody>
@@ -30,6 +30,15 @@
                 <td class="col-1 text-nowrap">
                     <a href="{% url 'categories:update' category.id %}"><i class="bi bi-pencil"></i></a>
                     <a href="{% url 'categories:delete' category.id %}"><i class="bi bi-trash text-danger"></i></a>
+                </td>
+                <td class="col-1 text-center">
+                    <a href="{% url 'categories:toggle_favorite' category.id %}" class="text-decoration-none">
+                        {% if category.is_favorite %}
+                            <i class="bi bi-star-fill text-warning" style="font-size: 1.2rem;" title="{% trans 'Remove from favorites' %}"></i>
+                        {% else %}
+                            <i class="bi bi-star text-muted" style="font-size: 1.2rem; opacity: 0.5;" title="{% trans 'Add to favorites' %}"></i>
+                        {% endif %}
+                    </a>
                 </td>
             </tr>
         {% empty %}
