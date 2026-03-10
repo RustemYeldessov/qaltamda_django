@@ -162,7 +162,7 @@ async def show_all_categories_handler(callback: CallbackQuery, state: FSMContext
 
 
 @router.callback_query(F.data == "show_favorite_categories")
-async def show_favorite_categories_handler(callback: CallbackQuery, state: FSMContext):
+async def show_favorite_categories(callback: CallbackQuery, state: FSMContext):
     user = await get_user_by_tg_id(callback.from_user.id)
 
     categories = await get_favorite_categories_db(user)
