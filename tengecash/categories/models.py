@@ -11,6 +11,7 @@ class Category(SafeDeleteModel):
     )
     description = models.TextField(blank=True, null=True)
     created_at = models.DateField(auto_now_add=True)
+    is_favorite = models.BooleanField(default=False)
     _safedelete_policy = SOFT_DELETE_CASCADE
 
     class Meta(SafeDeleteModel.Meta):
