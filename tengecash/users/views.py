@@ -18,12 +18,19 @@ logger = logging.getLogger(__name__)
 User = get_user_model()
 
 
-class UserListView(ListView):
+class UserListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
     model = User
     ordering = 'id'
     template_name = "users/index.html"
     context_object_name = "users"
     paginate_by = 15
+
+    def test_func(self):
+        return self.request.user.is_superuser
+
+    def handle_no_permission(self):
+        messages.error(self.request, _("You do not have permission to perform this action"))
+        return redirect('expenses:index')
 
 
 class UserCreateView(SuccessMessageMixin, CreateView):
@@ -70,7 +77,7 @@ class UserDeleteView(
 ):
     model = User
     template_name = "users/delete.html"
-    success_url = reverse_lazy("users:index")
+    success_url = reverse_lazy("users:login")
     success_message = _("User deleted successfully")
 
     def test_func(self):
