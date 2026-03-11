@@ -10,5 +10,10 @@
       {% bootstrap_form form %}
       <input class="btn btn-primary" type="submit" value="{% trans 'Update' %}">
     </form>
+
+  <h4 class="my-4">{% trans "Delete user" %}</h4>
+  <a href="{% url 'users:delete' user.id %}" class="btn btn-danger">
+    {% trans 'Delete profile' %}
+  </a>
 </div>
 {% endblock %}
