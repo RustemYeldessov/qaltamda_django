@@ -12,22 +12,27 @@ from tengecash.bot_app.database import get_user_by_tg_id, logout_user_db
 router = Router()
 
 HELP_COMMAND = """
-/info - Этот бот предназначен для помощи в ведении расходов. Для показа списка команд введи /help
-/start - начать работу с ботом
-/login - регистрация в Tenge Cash
+Пользователи:
 /register - регистрация пользователя
+/login - регистрация в Tenge Cash
 /logout - выход из бота
 
+Траты:
 /expadd - добавить трату
+/expdelete - удалить трату
 
+Категории:
 /catlist - список категорий
 /catadd - создать новую категорию
 /catedit - редактировать список категорий
 /catdelete - удалить категорию и ее содержимое
 
-/list - список последних 10-ти расходов (в разработке)
+Статистика:
 /stats - сумма расходов за текущий месяц
 
+Прочее:
+/info - информация о боте
+/start - проверка работы
 /site - перейти на веб-сайт Tenge Cash
 """
 
@@ -40,7 +45,7 @@ async def handle_help(message: Message, state: FSMContext):
 @router.message(Command("info"))
 async def handle_info(message: Message, state: FSMContext):
     await state.clear()
-    await message.answer('Для внесения траты в базу данных используй команду /expadd')
+    await message.answer('Этот бот предназначен для помощи в ведении расходов. Для показа списка команд введи /help')
 
 class LoginStates(StatesGroup):
     waiting_for_username = State()
