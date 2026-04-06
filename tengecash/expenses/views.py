@@ -1,9 +1,9 @@
+from django.db.models import Q
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import redirect
-from django.template.base import kwarg_re
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DetailView, DeleteView
 from django.utils.translation import gettext_lazy as _
@@ -25,7 +25,20 @@ class ExpenseListView(LoginRequiredMixin, FilterView):
     paginate_by = 20
 
     def get_queryset(self):
-        return Expense.objects.filter(user=self.request.user).order_by('-date', '-id')
+        # 1. Берем базовый набор данных (траты текущего пользователя)
+        queryset = Expense.objects.filter(user=self.request.user).order_by('-date')
+
+        # 2. Получаем текст из строки поиска
+        query = self.request.GET.get('search')
+
+        # 3. Если текст есть — фильтруем
+        if query:
+            queryset = queryset.filter(
+                Q(description__icontains=query) |  # Поиск в описании
+                Q(category__name__icontains=query)  # Поиск по названию категории
+            )
+
+        return queryset
 
     # Этот метод сохраняет фильтр трат на время действия сессии
     def get_filterset_kwargs(self, filterset_class):
