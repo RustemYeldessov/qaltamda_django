@@ -2,11 +2,8 @@
 # exit on error
 set -o errexit
 
-# Установка зависимостей
-pip install -r requirements.txt
+# Устанавливаем только основные зависимости (без библиотек для тестов и разработки)
+poetry install --only main --no-root
 
-# Сборка статических файлов (CSS, JS)
-python manage.py collectstatic --no-input
-
-# Применение миграций в базу данных Neon
-python manage.py migrate
+# Сбор статики
+poetry run python manage.py collectstatic --no-input
