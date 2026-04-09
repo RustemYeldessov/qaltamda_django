@@ -1,35 +1,33 @@
-[project]
+[tool.poetry]
 name = "qaltamda"
 version = "0.1.0"
 description = "Money track"
+authors = ["Rustem eldesov1997@gmail.com"]
 readme = "README.md"
-requires-python = ">=3.12"
-dependencies = [
-    "dj-database-url>=3.0.1",
-    "django>=5.2.4",
-    "django-bootstrap5==24.3",
-    "django-filter>=25.1",
-    "django-rest-framework>=0.1.0",
-    "gunicorn>=23.0.0",
-    "psycopg2-binary>=2.9.10",
-    "python-dotenv>=1.1.1",
-    "python-telegram-bot>=22.6",
-    "rollbar>=1.3.0",
-    "whitenoise>=6.9.0",
-]
+packages = [{include = "qaltamda"}]
 
-[dependency-groups]
-dev = [
-    "coverage>=7.10.2",
-    "pytest>=8.4.1",
-    "pytest-cov>=7.0.0",
-    "pytest-django>=4.11.1",
-    "ruff>=0.12.7",
-]
+[tool.poetry.dependencies]
+python = "^3.12"
+django = "^5.2.4"
+dj-database-url = "^3.0.1"
+django-bootstrap5 = "24.3"
+django-filter = "^25.1"
+django-rest-framework = "^0.1.0"
+djangorestframework = "^3.15.0"
+gunicorn = "^23.0.0"
+psycopg2-binary = "^2.9.10"
+python-dotenv = "^1.1.1"
+python-telegram-bot = "^22.6"
+rollbar = "^1.3.0"
+whitenoise = "^6.9.0"
+
+[tool.poetry.group.dev.dependencies]
+coverage = "^7.10.2"
+pytest = "^8.4.1"
+pytest-cov = "^7.0.0"
+pytest-django = "^4.11.1"
+ruff = "^0.12.7"
 
 [build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
-
-[tool.hatch.build.targets.wheel]
-packages = ["qaltamda"]
+requires = ["poetry-core>=2.0.0"]
+build-backend = "poetry.core.masonry.api"
