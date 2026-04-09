@@ -404,6 +404,22 @@ files = [
 djangorestframework = "*"
 
 [[package]]
+name = "django-safedelete"
+version = "1.4.1"
+description = "Mask your objects instead of deleting them from your database."
+optional = false
+python-versions = "*"
+groups = ["main"]
+files = [
+    {file = "django_safedelete-1.4.1-py3-none-any.whl", hash = "sha256:c4232445e4ec3a2b72ac9002130377088c8e541bba5a5af4cf8936ec3ff0afde"},
+    {file = "django_safedelete-1.4.1.tar.gz", hash = "sha256:f5919d627519fd6d766a3616ee15554a19e13edcb5f7fb9d86503cd71a6986d0"},
+]
+
+[package.dependencies]
+Django = "*"
+packaging = "*"
+
+[[package]]
 name = "djangorestframework"
 version = "3.17.1"
 description = "Web APIs for Django, made easy."
@@ -889,4 +905,4 @@ brotli = ["brotli"]
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.12"
-content-hash = "e7d0ce72ea3234b98c93abddda08282dab26eacc5bfd3392e83405429a869a9b"
+content-hash = "b085f75c6a94f6200a1c24f69c7db868fecda998d758798e7f6ce2c7ee8dba73"
