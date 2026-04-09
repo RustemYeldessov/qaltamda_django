@@ -7,7 +7,7 @@ readme = "README.md"
 packages = [{include = "qaltamda"}]
 
 [tool.poetry.dependencies]
-python = "^3.12"
+python = ">=3.12,<3.15"
 django = "^5.2.4"
 dj-database-url = "^3.0.1"
 django-bootstrap5 = "24.3"
@@ -21,6 +21,7 @@ python-telegram-bot = "^22.6"
 rollbar = "^1.3.0"
 whitenoise = "^6.9.0"
 django-safedelete = "^1.4.1"
+aiogram = "^3.27.0"
 
 [tool.poetry.group.dev.dependencies]
 coverage = "^7.10.2"
