@@ -9,7 +9,7 @@ from aiogram.fsm.context import FSMContext
 from qaltamda.bot_app.database import (
     get_user_by_tg_id,
     create_expense,
-    get_first_section,
+    # get_first_section,
     get_categories_db
 )
 from qaltamda.bot_app.states import ExpenseStates
@@ -37,22 +37,22 @@ async def confirm_expense(callback: CallbackQuery, state: FSMContext):
     data = await state.get_data()
 
     user = await get_user_by_tg_id(callback.from_user.id)
-    section = await get_first_section(user)
-
-    if not section:
-        await callback.message.answer(
-            "В базе пока нет разделов."
-            "Добавь их в браузерной версии /site"
-        )
-        await callback.answer()
-        return
+    # section = await get_first_section(user)
+    #
+    # if not section:
+    #     await callback.message.answer(
+    #         "В базе пока нет разделов."
+    #         "Добавь их в браузерной версии /site"
+    #     )
+    #     await callback.answer()
+    #     return
 
     new_expense = await create_expense(
         user=user,
         category_id=category_id,
         amount=Decimal(data['amount']),
         description=data['description'],
-        section=section
+        # section=section
     )
 
     formatted_date = new_expense.date.strftime("%d.%m.%Y")
