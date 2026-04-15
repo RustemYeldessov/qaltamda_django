@@ -84,17 +84,23 @@ def create_category(user, name):
 def category_delete(user, cat_id):
     return Category.objects.filter(id=cat_id, user=user).delete()
 
-@sync_to_async
-def get_first_section(user):
-    return Section.objects.filter(user=user).first()
+# @sync_to_async
+# def get_first_section(user):
+#     return Section.objects.filter(user=user).first()
 
 @sync_to_async
-def create_expense(user, category_id, amount, description, section):
+def create_expense(
+        user,
+        category_id,
+        amount,
+        description,
+        # section
+):
     category = Category.objects.get(id=category_id)
     return Expense.objects.create(
         user=user,
         category=category,
-        section=section,
+        # section=section,
         amount=amount,
         description=description,
         date=timezone.now()
