@@ -5,7 +5,7 @@ from .models import Expense
 
 class ExpenseSerializer(serializers.ModelSerializer):
     category_name = serializers.ReadOnlyField(source='category.name')
-    section_name = serializers.ReadOnlyField(source='section.name')
+    # section_name = serializers.ReadOnlyField(source='section.name')
 
     class Meta:
         model = Expense
