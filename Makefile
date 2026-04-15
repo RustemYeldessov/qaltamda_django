@@ -1,55 +1,56 @@
 install:
-	uv sync
+	poetry install --no-root
 
 dev-install:
-	uv sync --group dev
+	poetry install --no-root
 
 migrations:
-	uv run python manage.py makemigrations
+	poetry run python manage.py makemigrations
 
 migrate:
-	uv run python manage.py migrate
+	poetry run python manage.py migrate
 
 collectstatic:
-	uv run python manage.py collectstatic --noinput
+	poetry run python manage.py collectstatic --noinput
 
 run:
-	uv run python manage.py runserver
+	poetry run python manage.py runserver
 
 render-start:
-	uv run gunicorn tengecash.wsgi
+	poetry run gunicorn qaltamda.wsgi  # Заменил tengecash на qaltamda
 
 render-build:
 	./build.sh
-	uv run python manage.py migrate --noinput
+	# Миграции лучше оставить в Start Command на Render, но если нужно тут:
+	poetry run python manage.py migrate --noinput
 
 build:
 	./build.sh
 
 lint:
-	uv run ruff check
+	poetry run ruff check
 
 lint-fix:
-	uv run ruff check --fix
+	poetry run ruff check --fix
 
 test:
-	uv run pytest --ds=tengecash.settings --reuse-db
+	poetry run pytest --ds=qaltamda.settings --reuse-db
 
 coverage:
-	uv run coverage run --omit='*/migrations/*,*/settings.py,*/venv/*,*/.venv/*' -m pytest --ds=tengecash.settings
-	uv run coverage report --show-missing --skip-covered
+	poetry run coverage run --omit='*/migrations/*,*/settings.py,*/venv/*,*/.venv/*' -m pytest --ds=qaltamda.settings
+	poetry run coverage report --show-missing --skip-covered
 
 ci-install:
-	uv sync --group dev
+	poetry install --no-root
 
 ci-migrate:
-	uv run python manage.py makemigrations --noinput && \
-	uv run python manage.py migrate --noinput
+	poetry run python manage.py makemigrations --noinput && \
+	poetry run python manage.py migrate --noinput
 
 ci-test:
-	uv run coverage run --omit='*/migrations/*,*/settings.py,*/venv/*,*/.venv/*' -m pytest tengecash --ds=tengecash.settings --reuse-db
-	uv run coverage xml
-	uv run coverage report --show-missing --skip-covered
+	poetry run coverage run --omit='*/migrations/*,*/settings.py,*/venv/*,*/.venv/*' -m pytest --ds=qaltamda.settings --reuse-db
+	poetry run coverage xml
+	poetry run coverage report --show-missing --skip-covered
 
 runbot:
-	uv run python tengecash/bot_app/bot.py
+	poetry run python qaltamda/bot_app/bot.py
