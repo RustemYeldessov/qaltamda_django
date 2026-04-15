@@ -12,9 +12,9 @@
             <i class="bi bi-plus-lg"></i> {% trans "Add new expense" %}
         </a>
         <div class="d-flex gap-2">
-            <a href="{% url 'sections:index' %}" class="btn btn-outline-secondary btn-sm">
-                {% trans "Manage sections" %}
-            </a>
+<!--            <a href="{% url 'sections:index' %}" class="btn btn-outline-secondary btn-sm">-->
+<!--                {% trans "Manage sections" %}-->
+<!--            </a>-->
             <a href="{% url 'categories:index' %}" class="btn btn-outline-secondary btn-sm">
                 {% trans "Manage categories" %}
             </a>
@@ -24,10 +24,10 @@
     <div class="card mb-4 bg-light shadow-sm">
         <div class="card-body">
             <form method="get" class="mb-4 row g-3">
-                {# Секция #}
-                <div class="col-md-5">
-                    {% bootstrap_field filter.form.section show_label=True size="sm" %}
-                </div>
+<!--                {# Секция #}-->
+<!--                <div class="col-md-5">-->
+<!--                    {% bootstrap_field filter.form.section show_label=True size="sm" %}-->
+<!--                </div>-->
 
                 {# Категория #}
                 <div class="col-md-5">
