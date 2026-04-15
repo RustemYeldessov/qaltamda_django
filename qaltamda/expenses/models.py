@@ -15,7 +15,9 @@ User = get_user_model()
 class Expense(SafeDeleteModel):
     section = models.ForeignKey(
         Section,
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
         related_name="expenses",
         verbose_name=_("Section")
     )
